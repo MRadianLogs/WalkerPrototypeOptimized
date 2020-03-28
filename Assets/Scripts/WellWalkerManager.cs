@@ -4,6 +4,7 @@ using System.Collections;
 
 public class WellWalkerManager : MonoBehaviour
 {
+    private WalkerPool walkerPool;
 
 	[SerializeField] int maxWellWalkerDistance;
 	[SerializeField] float tileMoveTime;
@@ -16,8 +17,10 @@ public class WellWalkerManager : MonoBehaviour
 	
 
 
-	public void SetUp (ScenarioData scenario, IntPoint2D startTile, ScenarioMgr.Direction startingDir, bool leftTurns)
+	public void SetUp (ScenarioData scenario, WalkerPool gameWalkerPool, IntPoint2D startTile, ScenarioMgr.Direction startingDir, bool leftTurns)
 	{
+        walkerPool = gameWalkerPool;
+
 		//Debug.Log ("in well walker set up");
 		scenarioInfo = scenario;
 		facing = startingDir;
@@ -176,7 +179,8 @@ public class WellWalkerManager : MonoBehaviour
 		
 			tilesToGo--;
 		}
-        Destroy(gameObject);
+        walkerPool.DeactivateWellWalker(gameObject);
+        //Destroy(gameObject);
 	}
 
 }

@@ -111,7 +111,7 @@ public class WellManager : MonoBehaviour {
 				//Debug.Log(walker.transform.position);
 				//get the walker's script and get things working
 				WellWalkerManager walkerMgr = walker.GetComponent("WellWalkerManager") as WellWalkerManager;
-				walkerMgr.SetUp(this.scenarioInfo,neighborTiles[roadTileIndex],facing,goingLeft);
+				walkerMgr.SetUp(this.scenarioInfo, walkerPool, neighborTiles[roadTileIndex],facing,goingLeft);
 				goingLeft = !goingLeft;
 				yield return new WaitForSeconds(30);
 			} else

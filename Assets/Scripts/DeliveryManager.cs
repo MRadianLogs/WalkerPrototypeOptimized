@@ -108,7 +108,7 @@ public class DeliveryManager : MonoBehaviour
 				if (amtToDeliver == 0)
 				{
 					stillTraveling = false;
-					Destroy(gameObject, 0.1f);
+					Destroy(gameObject, 0.1f);//TODO/CONSIDER MAKE OBJECT POOL HERE.
 				} else
 				{
 					haveDestStore = havePath = false;

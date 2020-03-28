@@ -13,7 +13,17 @@ using UnityEngine;
 
 public class RoadPool : MonoBehaviour
 {
-	[SerializeField] GameObject greenPrefab;
+    //Create object pools for all prefabs. 
+    private Queue<GameObject> greenRoadObjectPool;
+    [SerializeField] private int greenRoadObjectPoolStartSize = 50;
+
+    private Queue<GameObject> redRoadObjectPool;
+    [SerializeField] private int redRoadObjectPoolStartSize = 50;
+
+    private Queue<GameObject> roadObjectPool;
+    [SerializeField] private int roadObjectPoolStartSize = 150;
+
+    [SerializeField] GameObject greenPrefab;
 	[SerializeField] GameObject redPrefab;
 	[SerializeField] GameObject actualRoadPrefab;
 	private ScenarioMgr scenario;
@@ -23,43 +33,101 @@ public class RoadPool : MonoBehaviour
 	void Start()
 	{
 		scenario = gameObject.GetComponent("ScenarioMgr") as ScenarioMgr;
-	}
+
+        //Create and setup object pools.
+        greenRoadObjectPool = new Queue<GameObject>();
+        SetupObjectPool(greenRoadObjectPool, greenRoadObjectPoolStartSize, greenPrefab);
+
+        redRoadObjectPool = new Queue<GameObject>();
+        SetupObjectPool(redRoadObjectPool, redRoadObjectPoolStartSize, redPrefab);
+
+        roadObjectPool = new Queue<GameObject>();
+        SetupObjectPool(roadObjectPool, roadObjectPoolStartSize, actualRoadPrefab);
+    }
+
+    private void SetupObjectPool(Queue<GameObject> objectPool, int objectPoolStartSize, GameObject objectTypePrefab)
+    {
+        for (int i = 0; i < objectPoolStartSize; i++)
+        {
+            GameObject citizen = (GameObject)Instantiate(objectTypePrefab);
+            citizen.SetActive(false);
+            objectPool.Enqueue(citizen);
+        }
+    }
 
 
-	public GameObject GetGreenGhost (IntPoint2D tileLoc)
+    public GameObject GetGreenGhost (IntPoint2D tileLoc)
 	{
-		GameObject tile = this.CreateRoadTile (greenPrefab, tileLoc);
+		GameObject tile = this.CreateRoadTile (greenRoadObjectPool, greenPrefab, tileLoc);
 		tile.SetActive (true);
 		return tile;
 	}
+
+    public void DeactivateGreenRoad(GameObject road)
+    {
+        road.SetActive(false);
+        greenRoadObjectPool.Enqueue(road);
+    }
 
 	public GameObject GetRedGhost (IntPoint2D tileLoc)
 	{
-		GameObject tile = this.CreateRoadTile (redPrefab, tileLoc);
+		GameObject tile = this.CreateRoadTile ( redRoadObjectPool, redPrefab, tileLoc);
 		tile.SetActive (true);
 		return tile;
 	}
 
-	public GameObject GetActualTile (IntPoint2D tileLoc)
+    public void DeactivateRedRoad(GameObject road)
+    {
+        road.SetActive(false);
+        redRoadObjectPool.Enqueue(road);
+    }
+
+    public GameObject GetActualTile (IntPoint2D tileLoc)
 	{
-		GameObject tile = this.CreateRoadTile (actualRoadPrefab, tileLoc);
+		GameObject tile = this.CreateRoadTile (roadObjectPool, actualRoadPrefab, tileLoc);
 		tile.SetActive (true);
 		return tile;
 	}
-	
 
-	private GameObject CreateRoadTile (GameObject prefabRoad, IntPoint2D tileIndex)
+    public void DeactivateRoad(GameObject road)
+    {
+        road.SetActive(false);
+        roadObjectPool.Enqueue(road);
+    }
+
+
+    private GameObject CreateRoadTile (Queue<GameObject> roadTypeObjectPool, GameObject prefabRoad, IntPoint2D tileIndex)
 	{
 		Vector3 roadPoint = scenario.ComputeTopLeftPointOfTile (tileIndex);
-		Debug.Log("Creating a road Tile at");
-		Debug.Log (roadPoint);
+		//Debug.Log("Creating a road Tile at");
+		//Debug.Log (roadPoint);
 
-		GameObject road = (GameObject)Instantiate (prefabRoad);
+        GameObject road = CheckObjectPool(roadTypeObjectPool, prefabRoad);
+		//GameObject road = (GameObject)Instantiate (prefabRoad);
 		road.transform.position = roadPoint + roadOffset;
 
-        Debug.Log(road.transform.position);
+        //Debug.Log(road.transform.position);
 			
 		return road;
 	}
+
+    private GameObject CheckObjectPool(Queue<GameObject> objectPool, GameObject roadTypePrefab)
+    {
+        GameObject road;
+
+        if (objectPool.Count == 0)
+        {
+            //Not enough guys in object pool. Make another. Make 50 more.
+            for (int i = 0; i < 50; i++)
+            {
+                road = (GameObject)Instantiate(roadTypePrefab);
+                road.SetActive(false);
+                objectPool.Enqueue(road);
+            }
+        }
+        road = objectPool.Dequeue();
+        
+        return road;
+    }
 }
 

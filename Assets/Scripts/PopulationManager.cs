@@ -71,7 +71,7 @@ public class PopulationManager : MonoBehaviour
 			for (int i = 0; i < pop; i++) {
 				GameObject citizen = walkerPool.GetCitizen (tileLoc, ScenarioMgr.Direction.Left);
 				CitizenManager mgr = citizen.GetComponent ("CitizenManager") as CitizenManager;
-				mgr.SetUp (scenario, tileLoc, ScenarioMgr.Direction.Right, true, startTile, null,false);
+				mgr.SetUp (scenario, walkerPool, tileLoc, ScenarioMgr.Direction.Right, true, startTile, null,false);
 				homelessCollection.Enqueue (mgr);
 			}
 			houseCollection.Remove (tileLoc);
@@ -116,7 +116,7 @@ public class PopulationManager : MonoBehaviour
 		for (int i = 0; i < homeless; i++) {
 			GameObject citizen = walkerPool.GetCitizen (startTile, ScenarioMgr.Direction.Right);
 			CitizenManager mgr = citizen.GetComponent ("CitizenManager") as CitizenManager;
-			mgr.SetUp (scenario, startTile, ScenarioMgr.Direction.Right, true, startTile, null, false);
+			mgr.SetUp (scenario, walkerPool, startTile, ScenarioMgr.Direction.Right, true, startTile, null, false);
 			homelessCollection.Enqueue (mgr);
 			yield return 0;
 		}
@@ -149,7 +149,7 @@ public class PopulationManager : MonoBehaviour
 					for (int i = 0; i < kickedOut; i++) {
 						GameObject citizen = walkerPool.GetCitizen (clearTile, ScenarioMgr.Direction.Left);
 						mgr = citizen.GetComponent ("CitizenManager") as CitizenManager;
-						mgr.SetUp (scenario, clearTile, ScenarioMgr.Direction.Right, true, startTile, null,false);
+						mgr.SetUp (scenario, walkerPool, clearTile, ScenarioMgr.Direction.Right, true, startTile, null,false);
 						homelessCollection.Enqueue (mgr);
 						yield return new WaitForSeconds (0.1f);
 					}
@@ -191,7 +191,7 @@ public class PopulationManager : MonoBehaviour
 				for (int i = 0; i < letIn; i++) {
 					GameObject citizen = walkerPool.GetCitizen (startTile, ScenarioMgr.Direction.Right);
 					mgr = citizen.GetComponent ("CitizenManager") as CitizenManager;
-					mgr.SetUp (scenario, startTile, ScenarioMgr.Direction.Right, true, startTile, null, false);
+					mgr.SetUp (scenario, walkerPool, startTile, ScenarioMgr.Direction.Right, true, startTile, null, false);
 					homelessCollection.Enqueue (mgr);
 					yield return new WaitForSeconds (0.1f);
 				}

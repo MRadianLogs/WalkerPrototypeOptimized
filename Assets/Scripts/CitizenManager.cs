@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CitizenManager : MonoBehaviour
 {
+    private WalkerPool walkerPool;
 
 	[SerializeField] private float tileMoveTime;
 	[SerializeField] float turnTime;
@@ -25,9 +26,11 @@ public class CitizenManager : MonoBehaviour
     private Vector3 citizenTileOffset = new Vector3(0.5f, 0.2f, 0.5f);
    // private int searchLimit = 100;
 
-    public void SetUp (ScenarioData scenario, IntPoint2D startTile, ScenarioMgr.Direction startingDir, bool wandering, 
+    public void SetUp (ScenarioData scenario, WalkerPool gameWalkerPool, IntPoint2D startTile, ScenarioMgr.Direction startingDir, bool wandering, 
 		                   IntPoint2D dest,HouseManager house,bool movingIn)
 	{
+        walkerPool = gameWalkerPool;
+
 		Debug.Log ("in citizen set up");
 		scenarioInfo = scenario;
 		facing = startingDir;
@@ -434,7 +437,8 @@ public class CitizenManager : MonoBehaviour
         {
             // done with this citizen
             basket.SetActive(false);
-            Destroy(gameObject); // destroy me
+            walkerPool.DeactivateCitizen(gameObject);
+            //Destroy(gameObject); // destroy me
         }
 	}
 

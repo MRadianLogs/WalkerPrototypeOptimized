@@ -113,6 +113,7 @@ public class ScenarioMgr : MonoBehaviour
 				this.CleanUpTempObjects ();
 				if (curObject != null)
 				{
+                    //TODO/CONSIDER Check what object this is and deactivate using appropriate pool.
 					Destroy (curObject);
 					curObject = null;
 				}
@@ -321,10 +322,28 @@ public class ScenarioMgr : MonoBehaviour
 				if (scenarioInfo.IsHouse (tile))
 				{
 					popMgr.RemoveHouse (tile);
-				}
-				actuallyDeleting = true;
-				scenarioInfo.DeleteBuilding (tile);
-				Destroy (delEndObj);
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    //Deactivate using house object pool.
+                    housePool.DeactivateHouse(delEndObj);
+                    //Destroy(delEndObj);
+                }
+                else if(scenarioInfo.IsRoadTile(tile))
+                {
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    //Deactivate using road object pool.
+                    roadPool.DeactivateRoad(delEndObj);
+                }
+                else //Stores, wells, farms.
+                {
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    Destroy(delEndObj);
+                }
+				//actuallyDeleting = true;
+				//scenarioInfo.DeleteBuilding (tile);
+				//Destroy (delEndObj);
 			}
 		}
 		if (!actuallyDeleting)
@@ -363,7 +382,16 @@ public class ScenarioMgr : MonoBehaviour
 			{
 				if (curKey != curTile)
 				{
-					Destroy (tempObjects [curKey]);
+                    //Find out if road is red or green and use appropriate object pool to deactivate.
+					if(tempObjects[curKey].tag.Equals("GreenGhost"))
+                    {
+                        roadPool.DeactivateGreenRoad(tempObjects[curKey]);
+                    }
+                    else if(tempObjects[curKey].tag.Equals("RedGhost"))
+                    {
+                        roadPool.DeactivateRedRoad(tempObjects[curKey]);
+                    }
+                    //Destroy (tempObjects [curKey]);
 					tempObjects.Remove (curKey);
 				}
 			}
@@ -397,7 +425,16 @@ public class ScenarioMgr : MonoBehaviour
 				table [curKey.xCoord - xStart, curKey.yCoord - yStart] = true;
 			} else
 			{
-				Destroy (tempObjects [curKey]);
+                //Find out if house is red or green and use appropriate object pool to deactivate.
+                if (tempObjects[curKey].tag.Equals("GreenGhost"))
+                {
+                    housePool.DeactivateGreenHouse(tempObjects[curKey]);
+                }
+                else if (tempObjects[curKey].tag.Equals("RedGhost"))
+                {
+                    housePool.DeactivateRedHouse(tempObjects[curKey]);
+                }
+                //Destroy (tempObjects [curKey]);
 				tempObjects.Remove (curKey);
 
 			}
@@ -458,9 +495,17 @@ public class ScenarioMgr : MonoBehaviour
 					vertArray [curKey.yCoord - yUp] = true;
 				} else
 				{
-					// current object is not part of current road, so destroy and remove
-					Destroy (tempObjects [curKey]);
-					tempObjects.Remove (curKey);
+                    // current object is not part of current road, so destroy and remove
+                    if (tempObjects[curKey].tag.Equals("GreenGhost"))
+                    {
+                        roadPool.DeactivateGreenRoad(tempObjects[curKey]);
+                    }
+                    else if (tempObjects[curKey].tag.Equals("RedGhost"))
+                    {
+                        roadPool.DeactivateRedRoad(tempObjects[curKey]);
+                    }
+                    //Destroy (tempObjects [curKey]);
+                    tempObjects.Remove (curKey);
 				}
 			}
 		}
@@ -754,10 +799,48 @@ public class ScenarioMgr : MonoBehaviour
 	{
 		Dictionary<IntPoint2D, GameObject>.ValueCollection valueColl =
 			tempObjects.Values;
+        if(tempObjectType == UIState.Road)
+        {
+            foreach (GameObject temp in valueColl)
+            {
+                if (temp.tag.Equals("GreenGhost"))
+                {
+                    roadPool.DeactivateGreenRoad(temp);
+                }
+                else if (temp.tag.Equals("RedGhost"))
+                {
+                    roadPool.DeactivateRedRoad(temp);
+                }
+            }  
+        }
+        else if(tempObjectType == UIState.Housing)
+        {
+            foreach (GameObject temp in valueColl)
+            {
+                if (temp.tag.Equals("GreenGhost"))
+                {
+                    housePool.DeactivateGreenHouse(temp);
+                }
+                else if (temp.tag.Equals("RedGhost"))
+                {
+                    housePool.DeactivateRedHouse(temp);
+                }
+            }
+        }
+        else
+        {
+            //This shouldnt be reached, but I left it here in case of errors with code above..
+            foreach (GameObject temp in valueColl)
+            {
+                Debug.LogError("Cleanup temp objects error!");
+            }
+        }
+        /*
 		foreach (GameObject temp in valueColl)
 		{
             Destroy(temp);
 		}
+        */
 		tempObjects.Clear ();
 		tempObjectType = UIState.Pointer;
 	}
