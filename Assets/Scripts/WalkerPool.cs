@@ -12,8 +12,8 @@ public class WalkerPool : MonoBehaviour
     private Queue<GameObject> wellWalkerObjectPool;
     [SerializeField] private int wellWalkerObjectPoolStartSize = 50;
 
-    [SerializeField] GameObject wellWalkerPrefab;
-	[SerializeField] GameObject citizenPrefab;
+    [SerializeField] GameObject wellWalkerPrefab = null;
+	[SerializeField] GameObject citizenPrefab = null;
 
 	private ScenarioMgr scenario;
 

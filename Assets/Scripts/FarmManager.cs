@@ -10,12 +10,12 @@ public class FarmManager : MonoBehaviour
 	private const int kCapacity = 1000;
 	private const int kDeliveryCapacity = 500;
 
-	[SerializeField] Material[] farmStateMats;
+	[SerializeField] Material[] farmStateMats = null;
 
-	private ScenarioData scenarioInfo;
-	private int numWorkers;
-	private PopulationManager popMgr;
-	private int curCropAmt;
+	private ScenarioData scenarioInfo = null;
+	private int numWorkers = -1;
+	private PopulationManager popMgr = null;
+	private int curCropAmt = -1;
 
 
 	private ScenarioMgr scenarioMgr;

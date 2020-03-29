@@ -14,9 +14,9 @@ public class FarmPool : MonoBehaviour
     private Queue<GameObject> regObjectPool;
     [SerializeField] private int regObjectPoolStartSize = 10;
 
-    [SerializeField] GameObject greenPrefab;
-    [SerializeField] GameObject redPrefab;
-    [SerializeField] GameObject actualPrefab;
+    [SerializeField] GameObject greenPrefab = null;
+    [SerializeField] GameObject redPrefab = null;
+    [SerializeField] GameObject actualPrefab = null;
 
     // Start is called before the first frame update
     void Start()

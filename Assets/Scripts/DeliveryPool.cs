@@ -8,7 +8,7 @@ public class DeliveryPool : MonoBehaviour
     private Queue<GameObject> deliveryObjectPool;
     [SerializeField] private int deliveryObjectPoolStartSize = 50;
 
-    [SerializeField] GameObject deliveryPrefab;
+    [SerializeField] GameObject deliveryPrefab = null;
 
     private ScenarioMgr scenario;
     public const float houseOffset = 0.5f;

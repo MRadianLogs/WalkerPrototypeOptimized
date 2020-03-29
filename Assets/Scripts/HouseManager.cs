@@ -7,7 +7,7 @@ public class HouseManager : MonoBehaviour
 
 	private HouseData myData;
 	private int curLevel;
-	[SerializeField] Material[] levelMats;
+	[SerializeField] Material[] levelMats = null;
 
     private bool gettingResource2;
 	

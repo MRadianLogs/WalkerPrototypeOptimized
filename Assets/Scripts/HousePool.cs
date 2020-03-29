@@ -15,9 +15,9 @@ public class HousePool : MonoBehaviour {
     [SerializeField] private int houseObjectPoolStartSize = 150;
 
 
-    [SerializeField] GameObject greenPrefab;
-	[SerializeField] GameObject redPrefab;
-	[SerializeField] GameObject actualHousePrefab;
+    [SerializeField] GameObject greenPrefab = null;
+	[SerializeField] GameObject redPrefab = null;
+	[SerializeField] GameObject actualHousePrefab = null;
 	private ScenarioMgr scenario;
 	public const float houseOffset = 0.5f;
 

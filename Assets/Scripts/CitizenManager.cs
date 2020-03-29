@@ -6,14 +6,14 @@ public class CitizenManager : MonoBehaviour
 {
     private WalkerPool walkerPool;
 
-	[SerializeField] private float tileMoveTime;
-	[SerializeField] float turnTime;
-    [SerializeField] GameObject basket;
+	[SerializeField] private float tileMoveTime = -1f;
+	[SerializeField] float turnTime = -1f;
+    [SerializeField] GameObject basket = null;
 	private ScenarioData scenarioInfo;
 	private ScenarioMgr.Direction facing;
 	private IntPoint2D curTile;
 	private bool wandering;
-	private bool startPath=false;
+	private bool startPath = false; // TODO This is never used?
 	private IntPoint2D destTile;
 	private HouseManager myHouse;
     private bool goingToHouse;

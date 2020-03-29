@@ -6,8 +6,8 @@ public class DeliveryManager : MonoBehaviour
 {
     DeliveryPool deliveryPool;
 
-    [SerializeField] float tileMoveTime;
-    [SerializeField] float turnTime;
+    [SerializeField] float tileMoveTime = -1f;
+    [SerializeField] float turnTime = -1f;
 
     private ScenarioData scenarioInfo;
 	private IntPoint2D curTile;

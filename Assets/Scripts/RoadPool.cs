@@ -23,9 +23,9 @@ public class RoadPool : MonoBehaviour
     private Queue<GameObject> roadObjectPool;
     [SerializeField] private int roadObjectPoolStartSize = 150;
 
-    [SerializeField] GameObject greenPrefab;
-	[SerializeField] GameObject redPrefab;
-	[SerializeField] GameObject actualRoadPrefab;
+    [SerializeField] GameObject greenPrefab = null;
+	[SerializeField] GameObject redPrefab = null;
+	[SerializeField] GameObject actualRoadPrefab = null;
 	private ScenarioMgr scenario;
     public static Vector3 roadOffset = new Vector3(0.5f, 0.01f, 0.5f);
 

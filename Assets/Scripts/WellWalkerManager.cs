@@ -6,9 +6,9 @@ public class WellWalkerManager : MonoBehaviour
 {
     private WalkerPool walkerPool;
 
-	[SerializeField] int maxWellWalkerDistance;
-	[SerializeField] float tileMoveTime;
-	[SerializeField] float turnTime;
+    [SerializeField] int maxWellWalkerDistance = -1;
+    [SerializeField] float tileMoveTime = -1f;
+	[SerializeField] float turnTime = -1f;
 	private ScenarioData scenarioInfo;
 	private ScenarioMgr.Direction facing;
 	private int tilesToGo;
