@@ -37,7 +37,7 @@ public class PopulationManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        Debug.Log("in PopulationManager start");
+        //Debug.Log("in PopulationManager start");
 		homeless = population;
 		workforce = (int)(population * workforcePercentage);
 		employed = 0;

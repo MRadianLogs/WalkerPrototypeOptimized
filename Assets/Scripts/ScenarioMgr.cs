@@ -85,7 +85,7 @@ public class ScenarioMgr : MonoBehaviour
 	{
         deliveryPool = gameObject.GetComponent("DeliveryPool") as DeliveryPool;
 
-        Debug.Log("in ScenarioMgr Start");
+        //Debug.Log("in ScenarioMgr Start");
 		numTilesInXAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.x);
 		numTilesInZAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.z);
 		scenarioInfo = new ScenarioData (numTilesInXAxis, numTilesInZAxis);
@@ -1209,7 +1209,7 @@ public class ScenarioMgr : MonoBehaviour
 
 	IEnumerator SetUpInitRoad ()
 	{
-        Debug.Log("in SetUpInitRoad");
+        //Debug.Log("in SetUpInitRoad");
 		yield return 0;
 		PlaceRoadTiles (initRoadXStart, initRoadXEnd, initRoadYStart, initRoadYEnd, initRoadHorizY, initRoadVertX);
 	}

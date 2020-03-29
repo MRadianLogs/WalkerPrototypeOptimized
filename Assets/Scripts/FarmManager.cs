@@ -43,7 +43,7 @@ public class FarmManager : MonoBehaviour
 		GameObject[] stores = GameObject.FindGameObjectsWithTag ("Store");
 		if (stores.Length > 0)
 		{
-            Debug.Log("found some stores");
+            //Debug.Log("found some stores");
 			List<IntPoint2D> startTiles = scenarioInfo.GetAdjacentRoadTiles (centerTile);
 			List<IntPoint2D> endTiles;
 			Stack<IntPoint2D> bestPath = new Stack<IntPoint2D> ();
@@ -134,7 +134,7 @@ public class FarmManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(10);
                 workerPercentage = workerPercentage + this.numWorkers / kMaxWorkers;
-                Debug.Log("changing mat");
+                //Debug.Log("changing mat");
                 farmRenderer.material = curMat;
             }
             workerPercentage = workerPercentage / farmStateMats.Length;

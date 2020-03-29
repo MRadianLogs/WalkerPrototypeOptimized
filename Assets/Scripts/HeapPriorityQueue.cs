@@ -213,6 +213,7 @@ namespace Priority_Queue
 		/// </summary>
 		public T Dequeue()
 		{
+            /*
 			#if DEBUG
 			if(_numNodes <= 0)
 			{
@@ -225,7 +226,8 @@ namespace Priority_Queue
 				                                    "Or add the same node to two different queues?)");
 			}
 			#endif
-			
+	        */		
+
 			T returnMe = _nodes[1];
 			Remove(returnMe);
 			return returnMe;

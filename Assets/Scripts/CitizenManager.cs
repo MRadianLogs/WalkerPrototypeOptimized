@@ -31,7 +31,7 @@ public class CitizenManager : MonoBehaviour
 	{
         walkerPool = gameWalkerPool;
 
-		Debug.Log ("in citizen set up");
+		//Debug.Log ("in citizen set up");
 		scenarioInfo = scenario;
 		facing = startingDir;
 		curTile = startTile;
@@ -305,7 +305,7 @@ public class CitizenManager : MonoBehaviour
 
     IEnumerator TakePath ()
 	{
-        Debug.Log("Starting path");
+        //Debug.Log("Starting path");
 		bool stillTraveling = true;
 		
 		Vector3 startPos = gameObject.transform.position, endPos = startPos;
