@@ -1,0 +1,6 @@
+It seems the main performance breaker is ScenarioData.ComputePath(). Fixing this should stop the main lag spikes.
+
+Bugs: 
+-An error in citizen manager? Something is null?
+
+-MAYBE: Bug with delivery guys standing around?
