@@ -43,6 +43,41 @@ public class ScenarioData
 		return canMake;
 	}
 
+    public void MakeFarm(IntPoint2D topLeft, GameObject building, int size = 1)
+    {
+        int sides = ConvertSizeToSides(size);
+        for (int i = topLeft.xCoord; i < topLeft.xCoord + sides; i++)
+        {
+            for (int j = topLeft.yCoord; j < topLeft.yCoord + sides; j++)
+            {
+                tileArray[i, j].MakeFarm(building, sides, topLeft);
+            }
+        }
+    }
+    public void MakeStore(IntPoint2D topLeft, GameObject building, int size = 1)
+    {
+        int sides = ConvertSizeToSides(size);
+        for (int i = topLeft.xCoord; i < topLeft.xCoord + sides; i++)
+        {
+            for (int j = topLeft.yCoord; j < topLeft.yCoord + sides; j++)
+            {
+                tileArray[i, j].MakeStore(building, sides, topLeft);
+            }
+        }
+    }
+    public void MakeWell(IntPoint2D topLeft, GameObject building, int size = 1)
+    {
+        int sides = ConvertSizeToSides(size);
+        for (int i = topLeft.xCoord; i < topLeft.xCoord + sides; i++)
+        {
+            for (int j = topLeft.yCoord; j < topLeft.yCoord + sides; j++)
+            {
+                tileArray[i, j].MakeWell(building, sides, topLeft);
+            }
+        }
+    }
+
+    /* Decomissioned to allow object pooling.
 	public void MakeOther (IntPoint2D topLeft, GameObject building, int size = 1)
 	{
 		int sides = ConvertSizeToSides (size);
@@ -52,6 +87,7 @@ public class ScenarioData
 			}
 		}
 	}
+    */
 
 	private int ConvertSizeToSides (int size)
 	{
@@ -130,7 +166,12 @@ public class ScenarioData
 		return tileArray [tileIndex.xCoord, tileIndex.yCoord].IsHouse ();
 	}
 
-	public IntPoint2D CloseClearTile (IntPoint2D tileIndex)
+    public string GetBuildingType(IntPoint2D tileIndex)
+    {
+        return tileArray[tileIndex.xCoord, tileIndex.yCoord].GetBuildingType();
+    }
+
+    public IntPoint2D CloseClearTile (IntPoint2D tileIndex)
 	{
 		IntPoint2D clearTile;
 		int x = tileIndex.xCoord;

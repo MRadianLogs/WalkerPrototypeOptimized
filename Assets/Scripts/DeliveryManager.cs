@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class DeliveryManager : MonoBehaviour
 {
+    DeliveryPool deliveryPool;
 
     [SerializeField] float tileMoveTime;
     [SerializeField] float turnTime;
@@ -18,8 +19,10 @@ public class DeliveryManager : MonoBehaviour
 
 
 
-	public void SetUp (ScenarioData scenario, IntPoint2D startTile, Stack<IntPoint2D> path, StoreManager store, int amount)
+	public void SetUp (ScenarioData scenario, DeliveryPool gameDeliveryPool, IntPoint2D startTile, Stack<IntPoint2D> path, StoreManager store, int amount)
 	{
+        deliveryPool = gameDeliveryPool;
+
 		//Debug.Log ("in delivery set up");
 		scenarioInfo = scenario;
 		this.path = path;
@@ -108,7 +111,8 @@ public class DeliveryManager : MonoBehaviour
 				if (amtToDeliver == 0)
 				{
 					stillTraveling = false;
-					Destroy(gameObject, 0.1f);//TODO/CONSIDER MAKE OBJECT POOL HERE.
+                    deliveryPool.DeactivateDeliveryGuy(gameObject);
+					//Destroy(gameObject, 0.1f);
 				} else
 				{
 					haveDestStore = havePath = false;

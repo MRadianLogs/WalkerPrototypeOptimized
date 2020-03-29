@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571409, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -251,10 +251,14 @@ GameObject:
   - component: {fileID: 148712883}
   - component: {fileID: 148712882}
   - component: {fileID: 148712886}
+  - component: {fileID: 148712892}
   - component: {fileID: 148712887}
   - component: {fileID: 148712888}
   - component: {fileID: 148712889}
   - component: {fileID: 148712890}
+  - component: {fileID: 148712895}
+  - component: {fileID: 148712894}
+  - component: {fileID: 148712893}
   - component: {fileID: 148712891}
   m_Layer: 0
   m_Name: Ground
@@ -371,6 +375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec10b9b5190829479d775f827791c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  greenRoadObjectPoolStartSize: 50
+  redRoadObjectPoolStartSize: 50
+  roadObjectPoolStartSize: 150
   greenPrefab: {fileID: 867652925824389844, guid: caa7f74feb429c441a611cb2712b7aaa,
     type: 3}
   redPrefab: {fileID: 6567081790118760123, guid: a01ed60ca78135145b77279f5b5496a4,
@@ -389,6 +396,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df70f5f3762403f42b34d6d22ce85ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  greenHouseObjectPoolStartSize: 100
+  redHouseObjectPoolStartSize: 100
+  houseObjectPoolStartSize: 150
   greenPrefab: {fileID: 186506, guid: 76d0eea6b44fe914fac9cc2037eda4c0, type: 3}
   redPrefab: {fileID: 186506, guid: f8e0ced1619444b42b282ec9203deb72, type: 3}
   actualHousePrefab: {fileID: 186506, guid: e7019fc70d288114882d87cf4758a2e4, type: 3}
@@ -464,8 +474,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c042604d982361744abecb3f371349b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  citizenObjectPoolStartSize: 50
+  wellWalkerObjectPoolStartSize: 50
   wellWalkerPrefab: {fileID: 166236, guid: cec96b446bc92434d82f62419a17ab3c, type: 3}
   citizenPrefab: {fileID: 166236, guid: 64d243c0c9070084cb7aa46d4196c884, type: 3}
+--- !u!114 &148712892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148712881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0867365c2cb6f241881f44116272ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deliveryObjectPoolStartSize: 50
+  deliveryPrefab: {fileID: 106958, guid: d131fffba6de8164bb70ad29778e2cde, type: 3}
+--- !u!114 &148712893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148712881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa360a3a83904143b66f32ee6caf235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  greenObjectPoolStartSize: 10
+  redObjectPoolStartSize: 10
+  regObjectPoolStartSize: 10
+  greenPrefab: {fileID: 110898, guid: d0c52d7ab4f1f274b98f938e2070268d, type: 3}
+  redPrefab: {fileID: 110898, guid: 5dd4b64991b090144a7ed00f65328744, type: 3}
+  actualPrefab: {fileID: 110898, guid: 856638eb5f6387c4a8159c4249f7b713, type: 3}
+--- !u!114 &148712894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148712881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74056ddee3ba314d931c77476c969ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  greenObjectPoolStartSize: 10
+  redObjectPoolStartSize: 10
+  regObjectPoolStartSize: 10
+  greenPrefab: {fileID: 141380, guid: b6ebba8e02cba61478bf3a50e5a9dc4f, type: 3}
+  redPrefab: {fileID: 141380, guid: c945c57ece85a6040b8a450d830e1283, type: 3}
+  actualPrefab: {fileID: 141380, guid: a5a1e816d411cca449234d965da6ef2e, type: 3}
+--- !u!114 &148712895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148712881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d023788867e356e4986b984a26f6e0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  greenObjectPoolStartSize: 10
+  redObjectPoolStartSize: 10
+  regObjectPoolStartSize: 10
+  greenPrefab: {fileID: 135450, guid: 876b797e4cd66d249ab5390f11321b0a, type: 3}
+  redPrefab: {fileID: 135450, guid: 6c833057df99b994e8aea362908eb152, type: 3}
+  actualPrefab: {fileID: 135450, guid: 4d4659f0011408b47905d2b105c893e9, type: 3}
 --- !u!1 &304187658
 GameObject:
   m_ObjectHideFlags: 0

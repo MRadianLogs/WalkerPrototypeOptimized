@@ -5,6 +5,11 @@ using System.Collections.Generic;
 // primary class to manage a scenario
 public class ScenarioMgr : MonoBehaviour
 {
+
+
+
+    private DeliveryPool deliveryPool;
+
 	public Material greenMat;
 	public Material redMat;
 	public int initRoadXStart;
@@ -78,6 +83,8 @@ public class ScenarioMgr : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        deliveryPool = gameObject.GetComponent("DeliveryPool") as DeliveryPool;
+
         Debug.Log("in ScenarioMgr Start");
 		numTilesInXAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.x);
 		numTilesInZAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.z);
@@ -335,12 +342,32 @@ public class ScenarioMgr : MonoBehaviour
                     //Deactivate using road object pool.
                     roadPool.DeactivateRoad(delEndObj);
                 }
+                else if(scenarioInfo.GetBuildingType(tile).Equals("store"))//Store.
+                {
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    objMgr.DeactivateStoreObject(delEndObj);
+                }
+                else if (scenarioInfo.GetBuildingType(tile).Equals("well"))//Well.
+                {
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    objMgr.DeactivateWellObject(delEndObj);
+                }
+                else if (scenarioInfo.GetBuildingType(tile).Equals("farm"))//Farm.
+                {
+                    actuallyDeleting = true;
+                    scenarioInfo.DeleteBuilding(tile);
+                    objMgr.DeactivateFarmObject(delEndObj);
+                }
+                /*
                 else //Stores, wells, farms.
                 {
                     actuallyDeleting = true;
                     scenarioInfo.DeleteBuilding(tile);
-                    Destroy(delEndObj);
+                    Destroy(delEndObj);                 
                 }
+                */
 				//actuallyDeleting = true;
 				//scenarioInfo.DeleteBuilding (tile);
 				//Destroy (delEndObj);
@@ -674,12 +701,26 @@ public class ScenarioMgr : MonoBehaviour
 		} else if (uiState == UIState.Housing)
 		{
 			MakeHousing (mouseLoc);
-		} else if (uiState >= UIState.Well)
+		}
+        else if(uiState == UIState.Farm1)
+        {
+            MakeFarm(mouseLoc);
+        }
+        else if (uiState == UIState.Store1)
+        {
+            MakeStore(mouseLoc);
+        }
+        else if (uiState == UIState.Well)
+        {
+            MakeWell(mouseLoc);
+        }
+        /*
+        else if (uiState >= UIState.Well)
 		{
 			MakeSoloObject (mouseLoc);
 		}
-
-	}
+        */
+    }
 
 	private void MakeRoad (Vector3 mouseLoc)
 	{
@@ -751,6 +792,50 @@ public class ScenarioMgr : MonoBehaviour
 		popMgr.AddHouse (tileLoc, houseMgr);
 	}
 
+    private void MakeFarm(Vector3 mouseLoc)
+    {
+        IntPoint2D curTile = this.ConvertPointToTileIndex(mouseLoc);
+        bool goodLocation = scenarioInfo.CanBuildHere(curTile, curObjectSizeInTiles);
+        if (goodLocation)
+        {
+            GameObject obj = objMgr.GetActualObject(this.GetUIArrayIndex(), curTile);
+            IntPoint2D topLeft = curTile;
+            if (curObjectSizeInTiles > 4)
+                topLeft = new IntPoint2D(curTile.xCoord - 1, curTile.yCoord - 1);
+            scenarioInfo.MakeFarm(topLeft, obj, curObjectSizeInTiles); // need to fix this later for objects bigger than 4 tiles
+            SetUpBuilding(obj, curTile);
+        }
+    }
+    private void MakeWell(Vector3 mouseLoc)
+    {
+        IntPoint2D curTile = this.ConvertPointToTileIndex(mouseLoc);
+        bool goodLocation = scenarioInfo.CanBuildHere(curTile, curObjectSizeInTiles);
+        if (goodLocation)
+        {
+            GameObject obj = objMgr.GetActualObject(this.GetUIArrayIndex(), curTile);
+            IntPoint2D topLeft = curTile;
+            if (curObjectSizeInTiles > 4)
+                topLeft = new IntPoint2D(curTile.xCoord - 1, curTile.yCoord - 1);
+            scenarioInfo.MakeWell(topLeft, obj, curObjectSizeInTiles); // need to fix this later for objects bigger than 4 tiles
+            SetUpBuilding(obj, curTile);
+        }
+    }
+    private void MakeStore(Vector3 mouseLoc)
+    {
+        IntPoint2D curTile = this.ConvertPointToTileIndex(mouseLoc);
+        bool goodLocation = scenarioInfo.CanBuildHere(curTile, curObjectSizeInTiles);
+        if (goodLocation)
+        {
+            GameObject obj = objMgr.GetActualObject(this.GetUIArrayIndex(), curTile);
+            IntPoint2D topLeft = curTile;
+            if (curObjectSizeInTiles > 4)
+                topLeft = new IntPoint2D(curTile.xCoord - 1, curTile.yCoord - 1);
+            scenarioInfo.MakeStore(topLeft, obj, curObjectSizeInTiles); // need to fix this later for objects bigger than 4 tiles
+            SetUpBuilding(obj, curTile);
+        }
+    }
+
+    /* Decomissioned to allow object pooling.
 	private void MakeSoloObject (Vector3 mouseLoc)
 	{
 		IntPoint2D curTile = this.ConvertPointToTileIndex (mouseLoc);
@@ -765,6 +850,7 @@ public class ScenarioMgr : MonoBehaviour
 			SetUpBuilding (obj, curTile);
 		}
 	}
+    */
 
 	private void PlaceRoadTiles (int xLeft, int xRight, int yUp, int yDown, 
 	                             int horizY, int vertX)
@@ -1064,7 +1150,7 @@ public class ScenarioMgr : MonoBehaviour
 	private void SetUpFarm (GameObject farm, IntPoint2D tileLoc)
 	{
 		FarmManager mgr = farm.GetComponent<FarmManager> () as FarmManager;
-		mgr.SetUp (gameObject, scenarioInfo, tileLoc,this);
+		mgr.SetUp (gameObject, deliveryPool, scenarioInfo, tileLoc,this);
 	}
 
 	private void SetUpStore (GameObject store, IntPoint2D tileLoc)

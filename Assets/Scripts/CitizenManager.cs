@@ -37,14 +37,14 @@ public class CitizenManager : MonoBehaviour
 		curTile = startTile;
 		this.wandering = wandering;
 		this.destTile = dest;
-        Debug.Log("start tile: " + startTile.ToString());
-        Debug.Log("dest tile: " + destTile.ToString());
+        //Debug.Log("start tile: " + startTile.ToString());
+        //Debug.Log("dest tile: " + destTile.ToString());
 		this.myHouse = house;
         this.movingIn = movingIn;
        havePath = false;
         startPath = false;
 		if (!wandering) {
-            Debug.Log("Starting TakePath Coroutine from SetUp");
+            //Debug.Log("Starting TakePath Coroutine from SetUp");
             StartCoroutine(TakePath());
 		} else {
 			StartCoroutine (Wander());
@@ -104,7 +104,7 @@ public class CitizenManager : MonoBehaviour
         havePath = false;
         //startPath = true;
         path = null;
-        Debug.Log("Starting coroutine from SendToDest");
+        //Debug.Log("Starting coroutine from SendToDest");
         StartCoroutine(TakePath());
 
 	}
@@ -312,8 +312,8 @@ public class CitizenManager : MonoBehaviour
 		Quaternion startAngle = gameObject.transform.rotation;
 		Quaternion endAngle = startAngle;
 		while (stillTraveling) {
-			Debug.Log ("stillTraveling from " + curTile.ToString () + " to " + destTile.ToString ());
-            Debug.Log(transform.position);
+			//Debug.Log ("stillTraveling from " + curTile.ToString () + " to " + destTile.ToString ());
+            //Debug.Log(transform.position);
 			if (goingToHouse && curTile.Equals (destTile) || goingToStore && havePath && path.Count == 0) 
 				stillTraveling = false;
 			else {
@@ -321,7 +321,7 @@ public class CitizenManager : MonoBehaviour
                     // compute path from curTile to dest
                     if (goingToHouse)
                     {
-                        Debug.Log("computing path to house");
+                        //Debug.Log("computing path to house");
                         path = scenarioInfo.ComputePath(curTile, this.destTile, true);
                         havePath = true;
                     }
@@ -336,9 +336,9 @@ public class CitizenManager : MonoBehaviour
 					yield return new WaitForSeconds (1);
 				else {
 					IntPoint2D nextTile = path.Pop ();
-					Debug.Log ("moving to " + nextTile.ToString ());
+					//Debug.Log ("moving to " + nextTile.ToString ());
 					startPos = gameObject.transform.position;
-					Debug.Log ("StartPos: " + startPos.ToString ());
+					//Debug.Log ("StartPos: " + startPos.ToString ());
 					ScenarioMgr.Direction nextFacing = facing;
 					//check validity of tile
 					if (!scenarioInfo.IsPassableTile (nextTile)) {
@@ -357,16 +357,16 @@ public class CitizenManager : MonoBehaviour
 					} else {
 						// compute direction
 						if (curTile.xCoord > nextTile.xCoord) {
-							Debug.Log ("headed left");
+							//Debug.Log ("headed left");
 							nextFacing = ScenarioMgr.Direction.Left;
 						} else if (curTile.xCoord < nextTile.xCoord) {
-							Debug.Log ("headed right");
+							//Debug.Log ("headed right");
 							nextFacing = ScenarioMgr.Direction.Right;
 						} else if (curTile.yCoord > nextTile.yCoord) {
-							Debug.Log ("headed up");
+							//Debug.Log ("headed up");
 							nextFacing = ScenarioMgr.Direction.Up;
 						} else if (curTile.yCoord < nextTile.yCoord) {
-							Debug.Log ("headed down");
+							//Debug.Log ("headed down");
 							nextFacing = ScenarioMgr.Direction.Down;
 						} else {
 							stillTraveling = false;
@@ -388,7 +388,7 @@ public class CitizenManager : MonoBehaviour
 								endAngle = Quaternion.Euler (0, 0, 0);
 								break;
 							}
-							Debug.Log ("endPos: " + endPos.ToString ());
+							//Debug.Log ("endPos: " + endPos.ToString ());
 							float elapsedTime = 0;
 							if (facing != nextFacing) {
 								// first handle the rotation
@@ -408,7 +408,7 @@ public class CitizenManager : MonoBehaviour
 								elapsedTime += Time.deltaTime;
 								yield return 0;
 							}
-                            Debug.Log("move to " + nextTile.ToString() + " done");
+                            //Debug.Log("move to " + nextTile.ToString() + " done");
 							// fix data for next tile
 							this.facing = nextFacing;
 							this.curTile = nextTile;
@@ -421,7 +421,7 @@ public class CitizenManager : MonoBehaviour
 			}
 			yield return 0;
 		}
-        Debug.Log("at destination");
+        //Debug.Log("at destination");
 		if (movingIn && myHouse!=null)
 		{
 			myHouse.RecordArrival();

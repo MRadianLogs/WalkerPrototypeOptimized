@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class FarmManager : MonoBehaviour
 {
+    private DeliveryPool deliveryPool;
 
 	private const int kMaxWorkers = 10;
 	private const int kCapacity = 1000;
@@ -20,11 +21,13 @@ public class FarmManager : MonoBehaviour
 	private ScenarioMgr scenarioMgr;
 	private IntPoint2D centerTile;
 
-	[SerializeField] GameObject deliveryPrefab;
+	//[SerializeField] GameObject deliveryPrefab;
 
 
-	public void SetUp (GameObject ground, ScenarioData scenario, IntPoint2D tileLoc, ScenarioMgr mgr)
+	public void SetUp (GameObject ground, DeliveryPool gameDeliveryPool, ScenarioData scenario, IntPoint2D tileLoc, ScenarioMgr mgr)
 	{
+        deliveryPool = gameDeliveryPool;
+
 		scenarioInfo = scenario;
 		centerTile = tileLoc;
 		popMgr = ground.GetComponent ("PopulationManager") as PopulationManager;
@@ -83,11 +86,15 @@ public class FarmManager : MonoBehaviour
 	{
 		int amtToDeliver = Mathf.Min (kDeliveryCapacity, curCropAmt);
 		curCropAmt = curCropAmt - amtToDeliver;
-		GameObject delPerson = (GameObject)Instantiate (deliveryPrefab);
+
+        GameObject delPerson = deliveryPool.GetDeliveryGuy();
+        delPerson.SetActive(true);
+		//GameObject delPerson = (GameObject)Instantiate (deliveryPrefab);
+
         Vector3 topLeft = scenarioMgr.ComputeTopLeftPointOfTile(startingTile);
         delPerson.transform.position = topLeft + new Vector3(.5f, .2f, .5f);
         DeliveryManager delMgr = delPerson.GetComponent ("DeliveryManager") as DeliveryManager;
-		delMgr.SetUp (scenarioInfo, startingTile, path, storeMgr, amtToDeliver);
+		delMgr.SetUp (scenarioInfo, deliveryPool, startingTile, path, storeMgr, amtToDeliver);
 	}
 
 	IEnumerator TryToDeliver ()
