@@ -1,0 +1,11 @@
+Performance has been greatly improved thanks to removing the priorityqueue debugging method. However there is still some spikes in performance. Some possible causes are:
+-ScenarioData.ComputePath() in general.
+	-ScenarioData.ComputePath() -> SearchNode.GetChildren() can be improved.
+	-ScenarioData.ComputePath() -> HeapPriorityQueue ... ctor() can be improved?
+-PostLateUpdate.FinishFrameRendering maybe should be looked into?
+
+Bugs: 
+-An error in citizen manager? Something is null?
+	- Look into CitizenManager ... MoveNext().
+
+-MAYBE: Bug with delivery guys standing around?
