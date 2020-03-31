@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CitizenManager : MonoBehaviour
 {
-    private WalkerPool walkerPool;
+    [SerializeField]private WalkerPool walkerPool;
 
 	[SerializeField] private float tileMoveTime = -1f;
 	[SerializeField] float turnTime = -1f;
@@ -51,10 +51,13 @@ public class CitizenManager : MonoBehaviour
 		}
 	}
 
-    public void SetUp(ScenarioData scenario, IntPoint2D startTile, ScenarioMgr.Direction startingDir, Stack<IntPoint2D> myPath,
+    
+    public void SetUp(ScenarioData scenario, WalkerPool gameWalkerPool, IntPoint2D startTile, ScenarioMgr.Direction startingDir, Stack<IntPoint2D> myPath,
                            StoreManager store, HouseManager house)
     {
-        Debug.Log("heading to store");
+        walkerPool = gameWalkerPool;
+
+        //Debug.Log("heading to store");
         scenarioInfo = scenario;
         facing = startingDir;
         curTile = startTile;
@@ -69,6 +72,7 @@ public class CitizenManager : MonoBehaviour
         havePath = true;
         StartCoroutine(TakePath());
     }
+    
 
     private void Awake()
     {
@@ -111,7 +115,7 @@ public class CitizenManager : MonoBehaviour
 
     private void DoStoreStuff()
     {
-        Debug.Log("collecting goods from store");
+        //Debug.Log("collecting goods from store");
         goods = destStore.ProvideGoods(50);
         goingToStore = false;
         goingToHouse = true;
@@ -437,6 +441,12 @@ public class CitizenManager : MonoBehaviour
         {
             // done with this citizen
             basket.SetActive(false);
+
+            //Debug.Log("Gameobject: " + gameObject); //Used to solve nullreference error with store walkers.
+            //Debug.Log("Gameobject name: " + gameObject.name);
+            //Debug.Log("Object active?: " + gameObject.activeSelf);
+            //Debug.Log("Walkerpool: " + walkerPool);
+            
             walkerPool.DeactivateCitizen(gameObject);
             //Destroy(gameObject); // destroy me
         }

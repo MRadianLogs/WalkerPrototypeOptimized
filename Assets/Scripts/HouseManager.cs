@@ -4,22 +4,23 @@ using System.Collections.Generic;
 
 public class HouseManager : MonoBehaviour
 {
+    WalkerPool walkerPool;
 
 	private HouseData myData;
 	private int curLevel;
 	[SerializeField] Material[] levelMats = null;
 
     private bool gettingResource2;
-	
 
-	public IntPoint2D GetHouseLocation ()
+    public IntPoint2D GetHouseLocation ()
 	{
 		return myData.GetLoc ();
 	}
 
-	public void AssignHouseData (HouseData theHouse)
+	public void AssignHouseData (HouseData theHouse, WalkerPool gameWalkerPool)
 	{
 		myData = theHouse;
+        walkerPool = gameWalkerPool;
 	}
 
 	public void StartUpdates ()
@@ -139,7 +140,7 @@ public class HouseManager : MonoBehaviour
         GameObject citizen = pool.GetCitizen(startingTile,ScenarioMgr.Direction.Up);
         
         CitizenManager citMgr = citizen.GetComponent("CitizenManager") as CitizenManager;
-        citMgr.SetUp(scenarioInfo, startingTile,  ScenarioMgr.Direction.Up, path, storeMgr, this);
+        citMgr.SetUp(scenarioInfo, walkerPool, startingTile,  ScenarioMgr.Direction.Up, path, storeMgr, this);
 
     }
 

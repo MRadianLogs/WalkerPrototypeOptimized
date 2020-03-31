@@ -80,6 +80,9 @@ public class SearchNode : PriorityQueueNode
 		return data.Equals(dest);
 	}
 
+
+    //Prof says: See if it can be removed, if it improves performance, and if not, make sure to put it in writeup that I looked at it. At that case, comps need to be spread accross multiple frames. So change the code to make that work.
+    //What is the purpose of this? To make sure that the next tile (param) is not already in the path? If this is not it, what is the point of this? Can it be removed?
 	private bool InAncestorNode(IntPoint2D tile)
 	{
 		bool found = false;

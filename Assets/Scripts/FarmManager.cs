@@ -99,7 +99,7 @@ public class FarmManager : MonoBehaviour
 
 	IEnumerator TryToDeliver ()
 	{
-        Debug.Log("Start Delivery");
+        //Debug.Log("Start Delivery");
 		while (curCropAmt > 0)
 		{
 			StartDelivery ();
@@ -127,7 +127,7 @@ public class FarmManager : MonoBehaviour
         while (true)
         {
             float workerPercentage = this.numWorkers / kMaxWorkers;
-            Debug.Log("in growth");
+            //Debug.Log("in growth");
             Renderer farmRenderer = gameObject.GetComponent<Renderer>();
             // start growth -- might be nice to do something visible at some point
             foreach (Material curMat in farmStateMats)
@@ -140,7 +140,7 @@ public class FarmManager : MonoBehaviour
             workerPercentage = workerPercentage / farmStateMats.Length;
             int harvestYield = (int)(kCapacity * workerPercentage);
             // handle harvest
-            Debug.Log("harvest yield is " + harvestYield.ToString());
+            //Debug.Log("harvest yield is " + harvestYield.ToString());
             curCropAmt = curCropAmt + harvestYield;
 
             StartCoroutine("TryToDeliver");

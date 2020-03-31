@@ -323,7 +323,7 @@ public class ScenarioData
 		int y = topLeft.yCoord;
 		for (int i = x; i < x + sides; i++) {
 			for (int j = y; j < y + sides; j++) {
-				Debug.Log ("deleting stuff at " + i + j);
+				//Debug.Log ("deleting stuff at " + i + j);
 				tileArray [i, j].DeleteTileContents ();
 			}
 		}

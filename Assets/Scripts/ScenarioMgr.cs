@@ -5,9 +5,7 @@ using System.Collections.Generic;
 // primary class to manage a scenario
 public class ScenarioMgr : MonoBehaviour
 {
-
-
-
+    private WalkerPool walkerPool;
     private DeliveryPool deliveryPool;
 
 	public Material greenMat;
@@ -83,6 +81,7 @@ public class ScenarioMgr : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        walkerPool = gameObject.GetComponent("WalkerPool") as WalkerPool;
         deliveryPool = gameObject.GetComponent("DeliveryPool") as DeliveryPool;
 
         //Debug.Log("in ScenarioMgr Start");
@@ -787,7 +786,7 @@ public class ScenarioMgr : MonoBehaviour
 		HouseData data = new HouseData (tileLoc);
 		this.scenarioInfo.MakeHouse (tileLoc, house);
 		HouseManager houseMgr = house.GetComponent<HouseManager> () as HouseManager;
-		houseMgr.AssignHouseData (data);
+		houseMgr.AssignHouseData (data, walkerPool);
 		houseMgr.StartUpdates ();
 		popMgr.AddHouse (tileLoc, houseMgr);
 	}
