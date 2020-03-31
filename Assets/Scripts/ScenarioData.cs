@@ -263,7 +263,18 @@ public class ScenarioData
 		}
 	}
 
-	public Stack<IntPoint2D> ComputePath (IntPoint2D start, IntPoint2D end, bool openTravel)
+    /*
+    public Stack<IntPoint2D> ComputePath(IntPoint2D start, IntPoint2D end, bool openTravel)
+    {
+        //Call coroutine to start looking for path.
+        //While not done, wait?
+
+        Stack<IntPoint2D> path;
+    }
+    */
+
+
+    public Stack<IntPoint2D> ComputePath (IntPoint2D start, IntPoint2D end, bool openTravel)
 	{
 		//Debug.Log ("Computing path from "+start.ToString()+ " to " + end.ToString());
 		HashSet<IntPoint2D> closed = new HashSet<IntPoint2D> ();
@@ -284,8 +295,8 @@ public class ScenarioData
 			else {
 				children = curNode.GetChildren (end, this, openTravel);
 				foreach (SearchNode child in children) {
-					if (searchList.Count == queueSize)
-						Debug.Log ("Priority queue size: " + queueSize.ToString () + " exceeded");
+					//if (searchList.Count == queueSize) //Removed as this seems like a debugger.
+						//Debug.Log ("Priority queue size: " + queueSize.ToString () + " exceeded");
 					//Debug.Log("enqueueing node: "+child.data.ToString());
 					//Debug.Log ("  Priority: "+child.Priority.ToString());
 					if (!closed.Contains (child.data)) {

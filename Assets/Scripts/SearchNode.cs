@@ -33,7 +33,7 @@ public class SearchNode : PriorityQueueNode
 		int childCost = this.cost+1;
 		int childHeuristic = 0;
 		IntPoint2D childData = new IntPoint2D(data.xCoord-1,data.yCoord);
-		if (scenario.IsValidTile(childData)&& !InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)//&& !InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -43,7 +43,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord+1,data.yCoord);
-		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -53,7 +53,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord,data.yCoord-1);
-		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -63,7 +63,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord,data.yCoord+1);
-		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
