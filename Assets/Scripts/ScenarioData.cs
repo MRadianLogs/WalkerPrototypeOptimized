@@ -6,11 +6,30 @@ using Priority_Queue;
 
 public class ScenarioData
 {
+    private ScenarioMgr mgr;
+
 	private GridTileInfo[,] tileArray;
 
 	private int gridWidth;
 	private int gridHeight;
 
+    public ScenarioData(ScenarioMgr gameMgr, int xTiles, int zTiles)
+    {
+        mgr = gameMgr;
+
+        gridWidth = xTiles;
+        gridHeight = zTiles;
+        tileArray = new GridTileInfo[xTiles, zTiles];
+        for (int i = 0; i < xTiles; i++)
+        {
+            for (int j = 0; j < zTiles; j++)
+            {
+                tileArray[i, j] = new GridTileInfo();
+            }
+        }
+    }
+
+    /*
 	public ScenarioData (int xTiles, int zTiles)
 	{
 		gridWidth = xTiles;
@@ -22,8 +41,9 @@ public class ScenarioData
 			}
 		}
 	}
+    */
 
-	public bool MakeRoad (IntPoint2D tileIndex, GameObject tile)
+    public bool MakeRoad (IntPoint2D tileIndex, GameObject tile)
 	{
 		bool canMake = IsValidTile (tileIndex) && tileArray [tileIndex.xCoord, tileIndex.yCoord].IsClear ();
 
@@ -264,16 +284,74 @@ public class ScenarioData
 	}
 
     /*
-    public Stack<IntPoint2D> ComputePath(IntPoint2D start, IntPoint2D end, bool openTravel)
+    //Testing if coroutines can have params and multiple params. Seems so.
+    IEnumerator Test(int num, float num2)
     {
-        //Call coroutine to start looking for path.
-        //While not done, wait?
-
-        Stack<IntPoint2D> path;
+        yield return 0;
     }
     */
 
+    public Stack<IntPoint2D> ComputePath(IntPoint2D start, IntPoint2D end, bool openTravel)
+    {
+        //Debug.Log ("Computing path from "+start.ToString()+ " to " + end.ToString());
+        HashSet<IntPoint2D> closed = new HashSet<IntPoint2D>();
+        closed.Add(start);
+        int queueSize = (this.gridHeight * this.gridWidth) * 16;
+        HeapPriorityQueue<SearchNode> searchList = new HeapPriorityQueue<SearchNode>(queueSize);
+        Stack<IntPoint2D> path = new Stack<IntPoint2D>();
+        SearchNode root = new SearchNode(null, start, 0, Math.Abs(start.xCoord - end.xCoord) + Math.Abs(start.yCoord - end.yCoord));
+        searchList.Enqueue(root, root.Priority);
+        SearchNode curNode = null;
+        bool found = false;
+        List<SearchNode> children;
+        while (!found && searchList.Count > 0)
+        {
+            curNode = searchList.Dequeue();
+            //Debug.Log("checking node: "+curNode.data.ToString());
+            if (curNode.AtGoal(end))
+                found = true;
+            else
+            {
+                //children = curNode.GetChildren(end, this, openTravel);
+                children = null;
+                bool looking = true;
+                mgr.StartCoroutine(curNode.GetChildren(looking, children, end, this, openTravel));
+                while(looking)
+                {
+                    //Wait for coroutine to finish?
+                    Debug.Log("Waiting");
+                }
 
+                foreach (SearchNode child in children)
+                {
+                    //if (searchList.Count == queueSize) //Removed as this seems like a debugger.
+                    //Debug.Log ("Priority queue size: " + queueSize.ToString () + " exceeded");
+                    //Debug.Log("enqueueing node: "+child.data.ToString());
+                    //Debug.Log ("  Priority: "+child.Priority.ToString());
+                    if (!closed.Contains(child.data))
+                    {
+                        searchList.Enqueue(child, child.cost + child.heuristic);
+                        closed.Add(child.data);
+                    }
+                }
+            }
+        }
+        if (found)
+        {
+            //Debug.Log ("pushing path");
+            while (curNode != null)
+            {
+                path.Push(curNode.data);
+                //				Debug.Log(curNode.data.ToString());
+                curNode = curNode.parent;
+            }
+            path.Pop();
+        }
+        return path;
+        
+    }
+
+    /*
     public Stack<IntPoint2D> ComputePath (IntPoint2D start, IntPoint2D end, bool openTravel)
 	{
 		//Debug.Log ("Computing path from "+start.ToString()+ " to " + end.ToString());
@@ -319,6 +397,7 @@ public class ScenarioData
 		}
 		return path;
 	}
+    */
 
 	public GameObject GetBuilding (IntPoint2D tile)
 	{
@@ -341,6 +420,44 @@ public class ScenarioData
 
 	}
 
+    /*
+    public IEnumerator ShortestPath (Stack<IntPoint2D> curSPath, List<IntPoint2D> startPoints, List<IntPoint2D> endPoints, bool roadsOnly = true)
+	{
+        curSPath = new Stack<IntPoint2D>();
+        //Stack<IntPoint2D> curSPath = new Stack<IntPoint2D> ();
+        bool pathFound = false;
+		foreach (IntPoint2D tileLoc in startPoints) {
+			if (curSPath.Contains (tileLoc)) {  // consider reversing contains for efficiency?
+				while (!tileLoc.Equals (curSPath.Peek ())) {
+					curSPath.Pop ();
+				}
+			} else {
+				foreach (IntPoint2D endLoc in endPoints) {
+                    Stack<IntPoint2D> tempPath = null;
+                    yield return StartCoroutine(ComputePathOpt(tempPath, tileLoc, endLoc, true));
+                    //Stack<IntPoint2D> tempPath = ComputePath (tileLoc, endLoc, !roadsOnly);  
+                    // seriously consider whether there are some efficiency gains to be made
+
+                    if (tempPath.Count > 0) {
+						tempPath.Push (tileLoc);
+						if (!pathFound || tempPath.Count < curSPath.Count) {
+							curSPath = tempPath;
+							pathFound = true;
+						}
+
+					}
+				}
+
+
+			}
+
+		}
+		//return curSPath;
+        yield return 0;
+	}
+    */
+
+    
 	public Stack<IntPoint2D> ShortestPath (List<IntPoint2D> startPoints, List<IntPoint2D> endPoints, bool roadsOnly = true)
 	{
 		Stack<IntPoint2D> curSPath = new Stack<IntPoint2D> ();
@@ -370,8 +487,7 @@ public class ScenarioData
 
 		}
 		return curSPath;
-
 	}
-
+    
 }
 

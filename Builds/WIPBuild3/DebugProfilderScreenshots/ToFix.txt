@@ -1,0 +1,1 @@
+Removing the method did not fix the issue but probably made it worse. I will need to use coroutines.

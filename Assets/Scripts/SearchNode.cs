@@ -27,13 +27,78 @@ public class SearchNode : PriorityQueueNode
 		this.Priority=cost+heuristic;
 	}
 
+    public System.Collections.IEnumerator GetChildren(bool stillLooking,List<SearchNode> children, IntPoint2D dest, ScenarioData scenario, bool openTravel)
+    {
+        children = new List<SearchNode>();
+        int childCost = this.cost + 1;
+        int childHeuristic = 0;
+        IntPoint2D childData = new IntPoint2D(data.xCoord - 1, data.yCoord);
+
+        bool inAncestor = InAncestorNode(childData);
+        
+
+        if (scenario.IsValidTile(childData) && !inAncestor
+            && (scenario.IsRoadTile(childData) || (openTravel && scenario.IsPassableTile(childData)) || childData.Equals(dest)))
+        {
+            childCost = this.cost + 1;
+            if (!scenario.IsRoadTile(childData))
+                childCost = childCost + 2;
+            childHeuristic = Math.Abs(childData.xCoord - dest.xCoord) + Math.Abs(childData.yCoord - dest.yCoord);
+            children.Add(new SearchNode(this, childData, childCost, childHeuristic));
+        }
+        childData = new IntPoint2D(data.xCoord + 1, data.yCoord);
+
+        inAncestor = InAncestorNode(childData);
+        yield return 0; //Wait for next frame to continue. 
+
+        if (scenario.IsValidTile(childData) && !inAncestor
+            && (scenario.IsRoadTile(childData) || (openTravel && scenario.IsPassableTile(childData)) || childData.Equals(dest)))
+        {
+            childCost = this.cost + 1;
+            if (!scenario.IsRoadTile(childData))
+                childCost = childCost + 2;
+            childHeuristic = Math.Abs(childData.xCoord - dest.xCoord) + Math.Abs(childData.yCoord - dest.yCoord);
+            children.Add(new SearchNode(this, childData, childCost, childHeuristic));
+        }
+        childData = new IntPoint2D(data.xCoord, data.yCoord - 1);
+
+        inAncestor = InAncestorNode(childData);
+
+        if (scenario.IsValidTile(childData) && !inAncestor
+            && (scenario.IsRoadTile(childData) || (openTravel && scenario.IsPassableTile(childData)) || childData.Equals(dest)))
+        {
+            childCost = this.cost + 1;
+            if (!scenario.IsRoadTile(childData))
+                childCost = childCost + 2;
+            childHeuristic = Math.Abs(childData.xCoord - dest.xCoord) + Math.Abs(childData.yCoord - dest.yCoord);
+            children.Add(new SearchNode(this, childData, childCost, childHeuristic));
+        }
+        childData = new IntPoint2D(data.xCoord, data.yCoord + 1);
+
+        inAncestor = InAncestorNode(childData);
+
+        if (scenario.IsValidTile(childData) && !inAncestor
+            && (scenario.IsRoadTile(childData) || (openTravel && scenario.IsPassableTile(childData)) || childData.Equals(dest)))
+        {
+            childCost = this.cost + 1;
+            if (!scenario.IsRoadTile(childData))
+                childCost = childCost + 2;
+            childHeuristic = Math.Abs(childData.xCoord - dest.xCoord) + Math.Abs(childData.yCoord - dest.yCoord);
+            children.Add(new SearchNode(this, childData, childCost, childHeuristic));
+        }
+        //return children;
+        stillLooking = false;
+        yield return 0;
+    }
+    
+    /*
 	public List<SearchNode> GetChildren(IntPoint2D dest, ScenarioData scenario, bool openTravel)
 	{
 		List<SearchNode> children = new List<SearchNode>();
 		int childCost = this.cost+1;
 		int childHeuristic = 0;
 		IntPoint2D childData = new IntPoint2D(data.xCoord-1,data.yCoord);
-		if (scenario.IsValidTile(childData)//&& !InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)&& !InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -43,7 +108,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord+1,data.yCoord);
-		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -53,7 +118,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord,data.yCoord-1);
-		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -63,7 +128,7 @@ public class SearchNode : PriorityQueueNode
 			children.Add(new SearchNode(this,childData,childCost,childHeuristic));
 		}
 		childData = new IntPoint2D(data.xCoord,data.yCoord+1);
-		if (scenario.IsValidTile(childData)//&&!InAncestorNode(childData)
+		if (scenario.IsValidTile(childData)&&!InAncestorNode(childData)
 		    &&(scenario.IsRoadTile(childData) || (openTravel&&scenario.IsPassableTile(childData)) || childData.Equals(dest)))
 		{
             childCost = this.cost + 1;
@@ -74,16 +139,38 @@ public class SearchNode : PriorityQueueNode
 		}
 		return children;
 	}
+    */
 
 	public bool AtGoal(IntPoint2D dest)
 	{
 		return data.Equals(dest);
 	}
 
-
+    /* CANT DO THIS BECAUSE DOESNT DERIVE FROM MONOBEHAVIOR
+    System.Collections.IEnumerator InAncestorNode(bool found, IntPoint2D tile)
+    {
+        //bool found = false;
+        SearchNode curNode = parent;
+        int count = 0;
+        while (!found && curNode != null)
+        {
+            if (count % 20 == 0) //If gone through a decent amount, (May need to tweak this) 
+            {
+                yield return 0; //Wait til next frame to continue. 
+            }
+            if (tile.Equals(curNode.data))
+                found = true;
+            else
+                curNode = curNode.parent;
+            count++;
+        }
+        //return found;
+    }
+    */
     //Prof says: See if it can be removed, if it improves performance, and if not, make sure to put it in writeup that I looked at it. At that case, comps need to be spread accross multiple frames. So change the code to make that work.
     //What is the purpose of this? To make sure that the next tile (param) is not already in the path? If this is not it, what is the point of this? Can it be removed?
-	private bool InAncestorNode(IntPoint2D tile)
+    
+    private bool InAncestorNode(IntPoint2D tile)
 	{
 		bool found = false;
 		SearchNode curNode = parent;
@@ -96,5 +183,6 @@ public class SearchNode : PriorityQueueNode
 		}
 		return found;
 	}
+    
 }
 

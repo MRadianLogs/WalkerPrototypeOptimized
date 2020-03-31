@@ -327,6 +327,7 @@ public class CitizenManager : MonoBehaviour
                     {
                         //Debug.Log("computing path to house");
                         path = scenarioInfo.ComputePath(curTile, this.destTile, true);
+                        //yield return StartCoroutine(scenarioInfo.ComputePath(path, curTile, this.destTile, true));
                         havePath = true;
                     }
                     else if (goingToStore)

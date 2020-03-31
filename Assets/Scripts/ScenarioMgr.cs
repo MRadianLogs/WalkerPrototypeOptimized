@@ -87,7 +87,7 @@ public class ScenarioMgr : MonoBehaviour
         //Debug.Log("in ScenarioMgr Start");
 		numTilesInXAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.x);
 		numTilesInZAxis = Mathf.FloorToInt (10 * gameObject.transform.localScale.z);
-		scenarioInfo = new ScenarioData (numTilesInXAxis, numTilesInZAxis);
+		scenarioInfo = new ScenarioData ( this, numTilesInXAxis, numTilesInZAxis);
 		uiState = UIState.Pointer;
 		curObject = null;
 		firstDir = Direction.Undefined;
